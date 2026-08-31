@@ -52,12 +52,11 @@
     <pre id="cmd">curl -fsSL https://raw.githubusercontent.com/minobots/session-limits-companion/main/install.sh | sh</pre>
     <div class="row">
       <button onclick="copyCmd()">Copy</button>
-      <a class="btn ghost" href="https://github.com/minobots/session-limits-companion/releases/latest/download/install.command" download>Download double-click installer</a>
     </div>
     <p class="muted" style="margin-bottom:0">
-      The download is a <code>.command</code> file &mdash; double-click it (first
-      time: right-click &rarr; <em>Open</em>). Either way it fetches the helper,
-      installs it as a login item, and prints a pairing QR.
+      This is the same kind of install line as Homebrew or rustup. It downloads
+      one ~7&nbsp;MB program, sets it to run at login, and prints a pairing QR
+      &mdash; nothing else.
     </p>
   </div>
 
@@ -72,6 +71,21 @@
     address and a unique token &mdash; you pair your own account, nobody else's.
     Re-run the line any time to reprint it. Off your home network, put both
     devices on the same Tailscale tailnet.</p>
+  </div>
+
+  <h2>Is it safe?</h2>
+  <div class="card">
+    <ul style="margin:0">
+      <li>It's <a href="https://github.com/minobots/session-limits-companion">open source</a>
+      &mdash; the whole <code>install.sh</code> is on that page.</li>
+      <li>The helper (<code>sessiond</code>) only reads your Codex usage from the
+      <code>codex</code> CLI you already use, and serves it on your local
+      network to the app. It makes no other connections.</li>
+      <li>No account, no data sent anywhere. Uninstall removes everything
+      (below).</li>
+      <li>A signed, notarized installer is coming; for now the command-line
+      install above avoids any Gatekeeper prompt.</li>
+    </ul>
   </div>
 
   <h2>Uninstall</h2>

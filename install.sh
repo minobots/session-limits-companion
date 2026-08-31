@@ -31,6 +31,22 @@ else
   exit 1
 fi
 
+# The companion only reads Codex usage; it needs the codex CLI here.
+if ! "$SHELL" -lc 'command -v codex' >/dev/null 2>&1 \
+   && [ ! -x "$HOME/.local/bin/codex" ] \
+   && [ ! -x /usr/local/bin/codex ] \
+   && [ ! -x /opt/homebrew/bin/codex ]; then
+  echo ""
+  echo "The 'codex' CLI was not found on this Mac."
+  echo "The companion reads your Codex usage from it. Install and sign in with:"
+  echo ""
+  echo "    npm i -g @openai/codex && codex login"
+  echo ""
+  echo "then run this line again. (Nothing else here uses Codex; MiniMax,"
+  echo "OpenCode Go and Claude connect directly in the app.)"
+  exit 1
+fi
+
 mkdir -p "$DEST/bin"
 downloaded=no
 for a in $assets; do

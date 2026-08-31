@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy Policy — Session Limits</title>
+<style>
+  :root { color-scheme: dark; }
+  body { margin:0; background:#0d1017; color:#e7eaf2;
+    font:15px/1.65 -apple-system,system-ui,"Segoe UI",Roboto,sans-serif;
+    display:flex; justify-content:center; padding:40px 20px; }
+  main { width:100%; max-width:680px; }
+  h1 { font-size:22px; margin:0 0 2px; }
+  .upd { color:#8b93a4; font-size:13px; margin:0 0 24px; }
+  h2 { font-size:15px; margin:28px 0 8px; color:#cdd3de; }
+  a { color:#8aa9ff; }
+  strong { color:#fff; }
+  table { border-collapse:collapse; width:100%; margin:10px 0; font-size:13.5px; }
+  th,td { border:1px solid #232a37; padding:8px 10px; text-align:left; vertical-align:top; }
+  th { background:#151a24; color:#9ba6b8; font-weight:600; }
+  code { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12.5px;
+    background:#0b0e14; border:1px solid #232a37; border-radius:5px; padding:1px 5px; }
+  ul { padding-left:20px; } li { margin:5px 0; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Privacy Policy — Session Limits</h1>
+  <p class="upd">Last updated: 2026-08-31</p>
+
+  <p>Session Limits is a dashboard that shows how much of your AI coding
+  subscriptions you have used and when they reset. This policy explains what the
+  app does and does not do with your data.</p>
+
+  <h2>The short version</h2>
+  <ul>
+    <li><strong>There is no Session Limits server.</strong> The app talks only
+    to the AI providers' own APIs and, optionally, to a companion program you
+    run on your own Mac.</li>
+    <li><strong>Your API keys and sign-in tokens never leave your device</strong>
+    except in a request to the provider that issued them.</li>
+    <li><strong>No analytics, no tracking, no advertising, no third-party SDKs</strong>
+    that collect data.</li>
+  </ul>
+
+  <h2>What the app stores on your device</h2>
+  <table>
+    <tr><th>Data</th><th>Where it is kept</th><th>Why</th></tr>
+    <tr><td>Provider API keys / OAuth tokens (MiniMax, OpenCode&nbsp;Go, Claude)</td>
+      <td>The operating system's secure store — Keychain on iOS/macOS, the
+      Keystore-backed encrypted store on Android</td>
+      <td>To read your usage from that provider</td></tr>
+    <tr><td>Companion app address and access token</td>
+      <td>Secure store (token) and app preferences (address)</td>
+      <td>To reach a companion you have set up</td></tr>
+    <tr><td>Which services you have enabled, and manually entered values</td>
+      <td>App preferences</td><td>To render your dashboard</td></tr>
+    <tr><td>A rolling ~7-day local history of usage percentages</td>
+      <td>App preferences</td><td>To draw the per-provider trend and heatmap</td></tr>
+  </table>
+  <p>All of this stays on the device. Uninstalling the app removes it. None of
+  it is transmitted to the app's developer.</p>
+
+  <h2>What leaves your device, and to whom</h2>
+  <ul>
+    <li><strong>To each AI provider you connect</strong>, an HTTPS request to
+    read your current usage — governed by that provider's own privacy policy.
+    The app contacts only:
+      <ul>
+        <li><code>api.minimax.io</code> / <code>api.minimaxi.com</code> — MiniMax</li>
+        <li><code>opencode.ai</code> — OpenCode Go</li>
+        <li><code>claude.com</code> / <code>platform.claude.com</code> /
+        <code>api.anthropic.com</code> — Claude (standard OAuth sign-in, then
+        usage reads with the resulting token)</li>
+      </ul>
+    </li>
+    <li><strong>To your companion app, if you set one up</strong>, an
+    authenticated request to the address you entered (typically a machine on
+    your own network or private Tailscale network). That program runs on your
+    hardware; it is not operated by the app's developer.</li>
+    <li><strong>Nothing else.</strong> The app makes no other network connections.</li>
+  </ul>
+
+  <h2>What the developer receives</h2>
+  <p>Nothing. The app has no backend, no telemetry, and no crash reporting that
+  sends data off the device. The developer cannot see your keys, your usage, or
+  that you use the app.</p>
+
+  <h2>Platform-level data</h2>
+  <p>The app stores are operated by Apple and Google. When you download or
+  update the app, or if the operating system reports a crash, those companies
+  may process data under their own policies. The app itself does not add to this.</p>
+
+  <h2>Children</h2>
+  <p>The app is not directed at children and collects no personal information
+  from anyone.</p>
+
+  <h2>Changes</h2>
+  <p>If this policy changes, the "Last updated" date above will change and the
+  new version will be published at the same location.</p>
+
+  <h2>Contact</h2>
+  <p>Questions about this policy or the app:
+  <a href="mailto:mailaxyu@gmail.com">mailaxyu@gmail.com</a></p>
+</main>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Session Limits — Codex companion</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: #0d1017; color: #e7eaf2;
+    font: 15px/1.6 -apple-system, system-ui, "Segoe UI", Roboto, sans-serif;
+    display: flex; justify-content: center; padding: 40px 20px;
+  }
+  main { width: 100%; max-width: 620px; }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  .sub { color: #9ba6b8; margin: 0 0 28px; }
+  h2 { font-size: 14px; letter-spacing: .3px; text-transform: uppercase;
+       color: #8b93a4; margin: 32px 0 10px; }
+  .card { background: #151a24; border: 1px solid #232a37; border-radius: 14px;
+          padding: 16px 18px; }
+  code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  pre { background: #0b0e14; border: 1px solid #232a37; border-radius: 10px;
+        padding: 12px 14px; overflow-x: auto; margin: 0; font-size: 12.5px;
+        color: #cdd3de; }
+  .row { display: flex; gap: 10px; align-items: center; margin-top: 10px; flex-wrap: wrap; }
+  button, a.btn {
+    appearance: none; border: 0; border-radius: 9px; padding: 9px 16px;
+    font: inherit; font-weight: 600; cursor: pointer; text-decoration: none;
+    background: #8aa9ff; color: #0d1017;
+  }
+  a.ghost { background: transparent; color: #8aa9ff; border: 1px solid #2b3a63; }
+  ol { padding-left: 20px; } li { margin: 6px 0; }
+  .muted { color: #8b93a4; font-size: 12.5px; }
+  .ok { color: #8fe0b2; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Session Limits — Codex companion</h1>
+  <p class="sub">A tiny helper so the app can show your <strong>Codex</strong> usage.</p>
+
+  <p>Codex / ChatGPT has no usage API, so a small program on the Mac where you
+  use <code>codex</code> reads the numbers from your logged-in CLI and serves
+  them to the app on your local network. Nothing else leaves the machine.
+  MiniMax, OpenCode&nbsp;Go and Claude don't need this &mdash; they connect
+  directly in the app.</p>
+
+  <h2>Install</h2>
+  <div class="card">
+    <p style="margin-top:0">Paste this in Terminal on that Mac:</p>
+    <pre id="cmd">curl -fsSL https://raw.githubusercontent.com/minobots/session-limits-companion/main/install.sh | sh</pre>
+    <div class="row">
+      <button onclick="copyCmd()">Copy</button>
+      <a class="btn ghost" href="https://github.com/minobots/session-limits-companion/releases/latest/download/install.command" download>Download double-click installer</a>
+    </div>
+    <p class="muted" style="margin-bottom:0">
+      The download is a <code>.command</code> file &mdash; double-click it (first
+      time: right-click &rarr; <em>Open</em>). Either way it fetches the helper,
+      installs it as a login item, and prints a pairing QR.
+    </p>
+  </div>
+
+  <h2>Pair</h2>
+  <div class="card">
+    <ol style="margin:0">
+      <li>Run the line above &mdash; a QR prints in the terminal.</li>
+      <li>In the app: <strong>Settings &rarr; Companion app &rarr; Scan pairing code</strong>.</li>
+      <li>Turn on <strong>Codex</strong> in Services.</li>
+    </ol>
+    <p class="muted" style="margin-bottom:0">The QR carries this machine's own
+    address and a unique token &mdash; you pair your own account, nobody else's.
+    Re-run the line any time to reprint it. Off your home network, put both
+    devices on the same Tailscale tailnet.</p>
+  </div>
+
+  <h2>Uninstall</h2>
+  <pre>launchctl unload ~/Library/LaunchAgents/com.sessionlimit.sessiond.plist
+rm ~/Library/LaunchAgents/com.sessionlimit.sessiond.plist
+rm -rf ~/.session-limit-tracker</pre>
+
+  <p class="muted" style="margin-top:28px">
+    Source &amp; releases:
+    <a class="ghost" style="border:0;padding:0" href="https://github.com/minobots/session-limits-companion">github.com/minobots/session-limits-companion</a>
+  </p>
+</main>
+<script>
+  function copyCmd() {
+    const t = document.getElementById('cmd').textContent.trim();
+    navigator.clipboard.writeText(t).then(() => {
+      const b = event.target; const o = b.textContent;
+      b.textContent = 'Copied'; b.classList.add('ok');
+      setTimeout(() => { b.textContent = o; b.classList.remove('ok'); }, 1500);
+    });
+  }
+</script>
+</body>
+</html>

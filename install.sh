@@ -1,12 +1,16 @@
 #!/bin/sh
-# Session Limits — companion installer for Codex.
+# Session Limits -- companion installer for Codex.
 #
-#   curl -fsSL https://raw.githubusercontent.com/minobots/session-limit-tracker/main/scripts/install.sh | sh
+#   curl -fsSL https://raw.githubusercontent.com/minobots/session-limits-companion/main/install.sh | sh
 #
-# Downloads the `sessiond` helper, installs it as a login agent (so it keeps
-# serving), and prints this machine's pairing QR. Re-run any time to reprint it.
-# Reads Codex usage from your logged-in `codex` CLI. Nothing leaves this Mac
-# except the requests `codex` already makes.
+# What it does, and nothing else:
+#   1. Downloads one small program, "sessiond" (~7 MB), to ~/.session-limit-tracker/bin
+#   2. Sets it to run at login so it stays available
+#   3. Prints a QR code to pair the Session Limits phone app with THIS Mac
+#
+# sessiond reads your Codex usage from your already-logged-in `codex` CLI and
+# serves it on your local network to the app. It has no other network access.
+# Source: https://github.com/minobots/session-limits-companion
 set -eu
 
 REPO="minobots/session-limits-companion"
@@ -15,32 +19,36 @@ BIN="$DEST/bin/sessiond"
 PLIST="$HOME/Library/LaunchAgents/com.sessionlimit.sessiond.plist"
 LABEL="com.sessionlimit.sessiond"
 
-[ "$(uname -s)" = "Darwin" ] || { echo "This installer is macOS-only." >&2; exit 1; }
+[ "$(uname -s)" = "Darwin" ] || { echo "This installer is macOS only." >&2; exit 1; }
 
 arch=$(uname -m)
-case "$arch" in
-  arm64) assets="sessiond-macos-arm64 sessiond-macos-x64" ;;  # x64 runs via Rosetta
-  x86_64) assets="sessiond-macos-x64" ;;
-  *) echo "Unsupported architecture: $arch" >&2; exit 1 ;;
-esac
+if [ "$arch" = "arm64" ]; then
+  assets="sessiond-macos-arm64 sessiond-macos-x64"   # x64 runs under Rosetta
+elif [ "$arch" = "x86_64" ]; then
+  assets="sessiond-macos-x64"
+else
+  echo "Unsupported architecture: $arch" >&2
+  exit 1
+fi
 
 mkdir -p "$DEST/bin"
-ok=""
-for asset in $assets; do
-  url="https://github.com/$REPO/releases/latest/download/$asset"
-  echo "Downloading $asset…"
-  if curl -fsSL "$url" -o "$BIN.tmp"; then ok=1; break; fi
+downloaded=no
+for a in $assets; do
+  echo "Downloading $a ..."
+  if curl -fsSL "https://github.com/$REPO/releases/latest/download/$a" -o "$BIN.tmp"; then
+    downloaded=yes
+    break
+  fi
 done
-[ -n "$ok" ] || {
-  echo "Download failed. Check for a release at" >&2
-  echo "  https://github.com/$REPO/releases/latest" >&2
+if [ "$downloaded" != yes ]; then
+  echo "Download failed -- check https://github.com/$REPO/releases/latest" >&2
   exit 1
-}
+fi
+
 mv "$BIN.tmp" "$BIN"
 chmod +x "$BIN"
-xattr -d com.apple.quarantine "$BIN" 2>/dev/null || true
+xattr -dr com.apple.quarantine "$BIN" 2>/dev/null || true
 
-# Login agent so it keeps running (and restarts on crash / login).
 mkdir -p "$HOME/Library/LaunchAgents"
 cat > "$PLIST" <<PLIST
 <?xml version="1.0" encoding="UTF-8"?>
@@ -61,5 +69,5 @@ launchctl unload "$PLIST" 2>/dev/null || true
 launchctl load "$PLIST"
 sleep 1
 
-echo
+echo ""
 "$BIN" --pair
